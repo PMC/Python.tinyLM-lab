@@ -47,7 +47,7 @@ y = to_categorical(y, num_classes=len(mydict))
 model = Sequential(
     [
         Input(shape=(nr_features,)),
-        Embedding(input_dim=len(mydict), output_dim=16, input_length=nr_features),
+        Embedding(input_dim=len(mydict), output_dim=32, input_length=nr_features),
         Bidirectional(LSTM(32, return_sequences=False)),
         Dense(len(mydict), activation="softmax"),
     ]
