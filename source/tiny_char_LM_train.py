@@ -26,24 +26,25 @@ mydict = dict(zip(mysorted, range(len(mysorted))))
 myrevdict = dict(zip(range(len(mysorted)), mysorted))
 
 ic(myrevdict)
+
 # Create a list of indices corresponding to the characters in the text
 encoded_text = [mydict[char] for char in text]
 
-
+# Create features and labels
 nr_features = 4
 X = []
 y = []
 
-# Create features and labels
 for i in range(len(encoded_text) - nr_features):
     features = encoded_text[i : i + nr_features]
     X.append(features)
     label = encoded_text[i + nr_features]
     y.append(label)
 
-
+# hot encode the labels
 y = to_categorical(y, num_classes=len(mydict))
 
+# build the model
 model = Sequential(
     [
         Input(shape=(nr_features,)),
@@ -62,6 +63,8 @@ my_callback = keras.callbacks.EarlyStopping(
     start_from_epoch=25,
     restore_best_weights=True,
 )
+
+# Train the model
 model.fit(np.array(X), np.array(y), epochs=250, batch_size=4, callbacks=my_callback)
 
 # Evaluate the model
