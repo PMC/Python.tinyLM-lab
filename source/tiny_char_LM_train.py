@@ -1,6 +1,7 @@
 from icecream import ic
 from tensorflow.keras.models import Sequential
 import keras
+from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.layers import (
     Dense,
     Flatten,
@@ -23,9 +24,7 @@ text = "Hello, World! How are you? I am fine, thank you. Summer is on the way."
 myset = set(text)
 mysorted = sorted(myset)
 mydict = dict(zip(mysorted, range(len(mysorted))))
-myrevdict = dict(zip(range(len(mysorted)), mysorted))
-
-ic(myrevdict)
+idx2char = dict(zip(range(len(mysorted)), mysorted))
 
 # Create a list of indices corresponding to the characters in the text
 encoded_text = [mydict[char] for char in text]
@@ -48,7 +47,7 @@ y = to_categorical(y, num_classes=len(mydict))
 model = Sequential(
     [
         Input(shape=(nr_features,)),
-        Embedding(input_dim=len(mydict), output_dim=32, input_length=nr_features),
+        Embedding(input_dim=len(mydict), output_dim=16, input_length=nr_features),
         Bidirectional(LSTM(32, return_sequences=False)),
         Dense(len(mydict), activation="softmax"),
     ]
@@ -65,7 +64,7 @@ my_callback = keras.callbacks.EarlyStopping(
 )
 
 # Train the model
-model.fit(np.array(X), np.array(y), epochs=250, batch_size=4, callbacks=my_callback)
+model.fit(np.array(X), np.array(y), epochs=250, batch_size=2, callbacks=my_callback)
 
 # Evaluate the model
 eval_loss, eval_acc = model.evaluate(np.array(X), np.array(y))
@@ -73,12 +72,19 @@ print(f"Eval accuracy: {eval_acc:.4f}")
 print(f"Eval loss: {eval_loss:.4f}")
 
 # predict the next character
-sequence_index = 10
+sequence_index = 21
 data_for_eval = X[sequence_index]
 data_for_eval = np.array(data_for_eval).reshape(1, nr_features)
 
-predicted = model.predict(data_for_eval)
-predicted = np.argmax(predicted, axis=1)
+predicted = model.predict(data_for_eval, verbose=0)
 
-print(f"Predicted: {myrevdict[predicted[0]]}")
-print(f"Expected: {myrevdict[encoded_text[sequence_index + nr_features]]}")
+# print the predicted character
+pred_char = np.argmax(predicted, axis=1)
+print(
+    "Input:",
+    "".join(idx2char[j] for j in X[sequence_index]),
+    "→ Predicted:",
+    idx2char[pred_char[0]],
+    " (Expected:",
+    idx2char[encoded_text[sequence_index + nr_features]] + ")",
+)
