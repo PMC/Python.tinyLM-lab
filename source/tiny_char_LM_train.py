@@ -76,8 +76,8 @@ print(f"Eval accuracy: {eval_acc:.4f}")
 print(f"Eval loss: {eval_loss:.4f}")
 
 # predict the next character
-sequence_index = 21
-data_for_eval = X[sequence_index]
+sample_index = 21
+data_for_eval = X[sample_index]
 data_for_eval = np.array(data_for_eval).reshape(1, nr_features)
 
 predicted = model.predict(data_for_eval, verbose=0)
@@ -86,9 +86,9 @@ predicted = model.predict(data_for_eval, verbose=0)
 pred_char = np.argmax(predicted, axis=1)
 print(
     "Input:",
-    "".join(idx2char[j] for j in X[sequence_index]),
+    "".join(idx2char[j] for j in X[sample_index]),
     "→ Predicted:",
     idx2char[pred_char[0]],
     " (Expected:",
-    idx2char[encoded_text[sequence_index + nr_features]] + ")",
+    idx2char[encoded_text[sample_index + nr_features]] + ")",
 )
