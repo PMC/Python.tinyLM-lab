@@ -52,8 +52,12 @@ model = Sequential(
         Dense(len(mydict), activation="softmax"),
     ]
 )
-model.compile(optimizer="adam", loss="categorical_crossentropy", metrics=["accuracy"])
 
+model.compile(
+    optimizer=Adam(learning_rate=0.005),
+    loss="categorical_crossentropy",
+    metrics=["accuracy"],
+)
 # Use callback to maximize accuracy
 my_callback = keras.callbacks.EarlyStopping(
     patience=15,
