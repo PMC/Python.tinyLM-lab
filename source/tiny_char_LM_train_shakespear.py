@@ -18,14 +18,15 @@ import numpy as np
 np.set_printoptions(threshold=np.inf, linewidth=np.inf)
 
 # read shakespear text
-text = open("text/shakespeare.txt", "r").read()
+myfile = open("text/shakespeare.txt", "r")
+text = myfile.read()
+myfile.close()
 
 # Replace all sequences of whitespace (including tabs, newlines, multiple spaces) with a single space
-cleaned_text = re.sub(r"\s+", " ", text)
+text = re.sub(r"\s+", " ", text)
 
-print("Original text length:", len(text))
-print("Cleaned text length:", len(cleaned_text))
-exit(1)
+print("Cleaned text length:", len(text))
+
 
 # Create a dictionary with unique characters as keys and their indices as values
 myset = set(text)
@@ -78,10 +79,14 @@ my_callback = keras.callbacks.EarlyStopping(
 # model.fit(np.array(X), np.array(y), epochs=250, batch_size=2, callbacks=my_callback)
 model.fit(np.array(X), np.array(y), epochs=5, batch_size=32)
 
+
 # Evaluate the model
 eval_loss, eval_acc = model.evaluate(np.array(X), np.array(y))
 print(f"Eval accuracy: {eval_acc:.4f}")
 print(f"Eval loss: {eval_loss:.4f}")
+
+# Save the model
+model.save(f"models/tiny_char_LM_shakespear{eval_acc:.4f}.keras")
 
 # predict the next character
 sample_index = 21
