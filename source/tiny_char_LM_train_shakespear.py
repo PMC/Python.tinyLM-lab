@@ -1,4 +1,5 @@
 from icecream import ic
+import os
 import re
 from tensorflow.keras.models import Sequential
 import keras
@@ -85,8 +86,10 @@ eval_loss, eval_acc = model.evaluate(np.array(X), np.array(y))
 print(f"Eval accuracy: {eval_acc:.4f}")
 print(f"Eval loss: {eval_loss:.4f}")
 
-# Save the model
-model.save(f"models/tiny_char_LM_shakespear_acc-{eval_acc:.4f}.keras")
+# Save the model if it doesn't exist
+filename = f"models/tiny_char_LM_shakespear_acc-{eval_acc:.4f}.keras"
+if not os.path.exists(filename):
+    model.save(filename)
 
 # predict the next character
 sample_index = 21
