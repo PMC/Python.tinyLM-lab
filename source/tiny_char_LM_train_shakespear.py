@@ -26,6 +26,9 @@ myfile.close()
 # Replace all sequences of whitespace (including tabs, newlines, multiple spaces) with a single space
 text = re.sub(r"\s+", " ", text)
 
+# reduce the text size for faster training
+text = text[: int(len(text) * 0.2)]
+  
 print("Cleaned text length:", len(text))
 
 
@@ -77,9 +80,8 @@ my_callback = keras.callbacks.EarlyStopping(
 )
 
 # Train the model
-model.fit(np.array(X), np.array(y), epochs=5, batch_size=32)
+model.fit(np.array(X), np.array(y), epochs=5, batch_size=4)
 # model.fit(np.array(X), np.array(y), epochs=250, batch_size=2048, callbacks=my_callback)
-
 
 # Evaluate the model
 eval_loss, eval_acc = model.evaluate(np.array(X), np.array(y))
