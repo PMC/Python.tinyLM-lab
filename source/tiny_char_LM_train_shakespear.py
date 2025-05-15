@@ -77,8 +77,8 @@ my_callback = keras.callbacks.EarlyStopping(
 )
 
 # Train the model
-# model.fit(np.array(X), np.array(y), epochs=250, batch_size=2, callbacks=my_callback)
-model.fit(np.array(X), np.array(y), epochs=250, batch_size=2048, callbacks=my_callback)
+model.fit(np.array(X), np.array(y), epochs=5, batch_size=32)
+# model.fit(np.array(X), np.array(y), epochs=250, batch_size=2048, callbacks=my_callback)
 
 
 # Evaluate the model
