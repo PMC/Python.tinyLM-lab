@@ -1,4 +1,5 @@
 from icecream import ic
+import re
 from tensorflow.keras.models import Sequential
 import keras
 from tensorflow.keras.optimizers import Adam
@@ -19,9 +20,12 @@ np.set_printoptions(threshold=np.inf, linewidth=np.inf)
 # read shakespear text
 text = open("text/shakespeare.txt", "r").read()
 
-print("Length of text:", len(text))
-exit(1)
+# Replace all sequences of whitespace (including tabs, newlines, multiple spaces) with a single space
+cleaned_text = re.sub(r"\s+", " ", text)
 
+print("Original text length:", len(text))
+print("Cleaned text length:", len(cleaned_text))
+exit(1)
 
 # Create a dictionary with unique characters as keys and their indices as values
 myset = set(text)
@@ -71,7 +75,8 @@ my_callback = keras.callbacks.EarlyStopping(
 )
 
 # Train the model
-model.fit(np.array(X), np.array(y), epochs=250, batch_size=2, callbacks=my_callback)
+# model.fit(np.array(X), np.array(y), epochs=250, batch_size=2, callbacks=my_callback)
+model.fit(np.array(X), np.array(y), epochs=5, batch_size=32)
 
 # Evaluate the model
 eval_loss, eval_acc = model.evaluate(np.array(X), np.array(y))
