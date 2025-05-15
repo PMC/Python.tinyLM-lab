@@ -68,7 +68,7 @@ model.compile(
 )
 # Use callback to maximize accuracy
 my_callback = keras.callbacks.EarlyStopping(
-    patience=15,
+    patience=10,
     mode="max",
     monitor="accuracy",
     start_from_epoch=25,
@@ -77,7 +77,7 @@ my_callback = keras.callbacks.EarlyStopping(
 
 # Train the model
 # model.fit(np.array(X), np.array(y), epochs=250, batch_size=2, callbacks=my_callback)
-model.fit(np.array(X), np.array(y), epochs=5, batch_size=32)
+model.fit(np.array(X), np.array(y), epochs=250, batch_size=2048, callbacks=my_callback)
 
 
 # Evaluate the model
@@ -86,7 +86,7 @@ print(f"Eval accuracy: {eval_acc:.4f}")
 print(f"Eval loss: {eval_loss:.4f}")
 
 # Save the model
-model.save(f"models/tiny_char_LM_shakespear{eval_acc:.4f}.keras")
+model.save(f"models/tiny_char_LM_shakespear_acc-{eval_acc:.4f}.keras")
 
 # predict the next character
 sample_index = 21

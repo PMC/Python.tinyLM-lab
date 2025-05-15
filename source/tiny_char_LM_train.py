@@ -74,6 +74,7 @@ model.fit(np.array(X), np.array(y), epochs=250, batch_size=2, callbacks=my_callb
 eval_loss, eval_acc = model.evaluate(np.array(X), np.array(y))
 print(f"Eval accuracy: {eval_acc:.4f}")
 print(f"Eval loss: {eval_loss:.4f}")
+model.save(f"models/tiny_char_LM_train_acc-{eval_acc:.4f}.keras")
 
 # predict the next character
 sample_index = 21
